@@ -18,6 +18,7 @@ void set_device(int device_id);
 unsigned int get_blob_index(void* handle[1], const char *query_blob_name); 
 void get_blob_data(void* handle[1], unsigned int blob_id, THFloatTensor* output);
 void read_mean(const char* mean_file_path, THFloatTensor* mean_tensor);
+void reshape(void* handle[1], int bsize, int cnum, int h, int w);
 }
 
 using namespace caffe;  // NOLINT(build/namespaces)
@@ -167,6 +168,14 @@ void get_blob_data(void* handle[1], unsigned int blob_id, THFloatTensor* output)
 	default:
 	  LOG(FATAL) << "Unknown Caffe mode.";
 	}  // switch (Caffe::mode())
+}
+
+void reshape(void* handle[1], int bsize, int cnum, int h, int w) {
+	Net<float>* net_ = (Net<float>*)handle[1];
+	Blob<float>* input_layer = net_->input_blobs()[0];
+  	input_layer->Reshape(bsize, cnum, h, w);
+  	/* Forward dimension change to all layers. */
+  	net_->Reshape();
 }
 
 void reset(void* handle[1])

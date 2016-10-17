@@ -49,6 +49,14 @@ function Net:readMean(mean_file_path)
 	return mean_tensor
 end
 
+function Net:reshape(bnum, cnum, h, w)
+	assert(type(bnum) == 'number')
+	assert(type(cnum) == 'number')
+	assert(type(h) == 'number')
+	assert(type(w) == 'number')
+	C.reshape(self.handle, ffi.cast('int',bnum), ffi.cast('int',cnum), ffi.cast('int',h), ffi.cast('int',w))
+end
+
 function Net:reset()
   C.reset(self.handle)
 end
