@@ -19,6 +19,7 @@ unsigned int get_blob_index(void* handle[1], const char *query_blob_name);
 void get_blob_data(void* handle[1], unsigned int blob_id, THFloatTensor* output);
 void read_mean(const char* mean_file_path, THFloatTensor* mean_tensor);
 void reshape(void* handle[1], int bsize, int cnum, int h, int w);
+void save_model(void* handle[1], char* weights_file);
 }
 
 using namespace caffe;  // NOLINT(build/namespaces)
@@ -137,7 +138,7 @@ void read_mean(const char* mean_file_path, THFloatTensor* mean_tensor)
     caffe_copy(data_mean.count(), data_mean.cpu_data(), data_ptr);
 }
 
-unsigned int get_blob_index(void* handle[1], const char *query_blob_name) 
+unsigned int get_blob_index(void* handle[1], const char* query_blob_name) 
 { 
 	Net<float>* net_ = (Net<float>*)handle[1];
     std::string str_query(query_blob_name);     
@@ -176,6 +177,13 @@ void reshape(void* handle[1], int bsize, int cnum, int h, int w) {
   	input_layer->Reshape(bsize, cnum, h, w);
   	/* Forward dimension change to all layers. */
   	net_->Reshape();
+}
+
+void save_model(void* handle[1], char* weights_file) {
+	Net<float>* net_ = (Net<float>*)handle[1];
+	NetParameter net_param; 
+	net_->ToProto(&net_param, false); 
+	WriteProtoToBinaryFile(net_param, weights_file);  
 }
 
 void reset(void* handle[1])

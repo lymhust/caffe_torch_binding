@@ -57,6 +57,11 @@ function Net:reshape(bnum, cnum, h, w)
 	C.reshape(self.handle, ffi.cast('int',bnum), ffi.cast('int',cnum), ffi.cast('int',h), ffi.cast('int',w))
 end
 
+function Net:saveModel(weights_file)
+	assert(type(weights_file) == 'string')
+	C.save_model(self.handle, ffi.cast('char *', weights_file))
+end
+
 function Net:reset()
   C.reset(self.handle)
 end
