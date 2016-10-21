@@ -3,6 +3,7 @@
 
 #include <TH/TH.h>
 #include "caffe/caffe.hpp"
+#include "caffe/util/gpu_memory.hpp"
 
 extern "C" 
 {
@@ -20,9 +21,23 @@ void get_blob_data(void* handle[1], unsigned int blob_id, THFloatTensor* output)
 void read_mean(const char* mean_file_path, THFloatTensor* mean_tensor);
 void reshape(void* handle[1], int bsize, int cnum, int h, int w);
 void save_model(void* handle[1], char* weights_file);
+void initialize_gpu_memory_scope();
 }
 
 using namespace caffe;  // NOLINT(build/namespaces)
+
+shared_ptr<GPUMemory::Scope> gpu_memory_scope;
+
+void initialize_gpu_memory_scope() {
+  vector<int> gpus;
+  int count = 0;
+  CUDA_CHECK(cudaGetDeviceCount(&count));
+  for (int i = 0; i < count; ++i) {
+    gpus.push_back(i);
+  }
+  CHECK_GT(gpus.size(), 0);
+  gpu_memory_scope.reset(new GPUMemory::Scope(gpus));
+}
 
 void init(void* handle[1], const char* param_file, const char* model_file, const char* phase_name)
 {

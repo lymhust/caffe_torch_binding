@@ -14,6 +14,7 @@ void get_blob_data(void* handle[1], unsigned int blob_id, THFloatTensor* output)
 void read_mean(const char* mean_file_path, THFloatTensor* mean_tensor);
 void reshape(void* handle[1], int bsize, int cnum, int h, int w);
 void save_model(void* handle[1], char* weights_file);
+void initialize_gpu_memory_scope();
 ]]
 
 caffe.C = ffi.load(package.searchpath('libtcaffe', package.cpath))

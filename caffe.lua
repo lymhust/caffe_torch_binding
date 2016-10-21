@@ -62,6 +62,10 @@ function Net:saveModel(weights_file)
 	C.save_model(self.handle, ffi.cast('char *', weights_file))
 end
 
+function Net:initGPUMemoryScope()
+	C.initialize_gpu_memory_scope()
+end
+
 function Net:reset()
   C.reset(self.handle)
 end
