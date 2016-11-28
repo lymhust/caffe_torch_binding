@@ -12,27 +12,16 @@ CAFFE_DIR=/*path-to-caffe-root*/ luarocks make
 Supported functions:
 ```lua
 Net:forward(input)
-
 Net:updateGradInput(input, gradOutput)
-
 Net:getBlobIndx(query_blob_name)
-
 Net:getBlobData(blob_id)
-
 Net:readMean(mean_file_path)
-
 Net:reshape(bnum, cnum, h, w)
-
 Net:saveModel(weights_file)
-
 Net:initGPUMemoryScope()
-
 Net:reset()
-
 Net:setModeCPU()
-
 Net:setModeGPU()
-
 Net:setDevice(device_id)
 ```
 
