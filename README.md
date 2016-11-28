@@ -6,11 +6,35 @@ A short binding to use Caffe as a module in Torch7. Has the same functionality a
 You have to have installed and built Caffe, then do this:
 
 ```bash
-CAFFE_DIR=/*path-to-caffe-root*/ luarocks install caffe
+CAFFE_DIR=/*path-to-caffe-root*/ luarocks make
 ```
 
 Supported functions:
+```lua
+Net:forward(input)
 
+Net:updateGradInput(input, gradOutput)
+
+Net:getBlobIndx(query_blob_name)
+
+Net:getBlobData(blob_id)
+
+Net:readMean(mean_file_path)
+
+Net:reshape(bnum, cnum, h, w)
+
+Net:saveModel(weights_file)
+
+Net:initGPUMemoryScope()
+
+Net:reset()
+
+Net:setModeCPU()
+
+Net:setModeGPU()
+
+Net:setDevice(device_id)
+```
 
 Examples:
 ```lua
@@ -24,7 +48,7 @@ gradOutput = torch.FloatTensor(10,1000,1,1)
 gradInput = net:backward(input, gradOutput)
 ```
 
-Use can also use it inside a network as nn.Module, for example:
+User can also use it inside a network as nn.Module, for example:
 
 ```lua
 require 'caffe'
