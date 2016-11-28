@@ -9,8 +9,10 @@ You have to have installed and built Caffe, then do this:
 CAFFE_DIR=/*path-to-caffe-root*/ luarocks install caffe
 ```
 
-Forward and backward are supported:
+Supported functions:
 
+
+Examples:
 ```lua
 require 'caffe'
 
@@ -31,6 +33,3 @@ model = nn.Sequential()
 model:add(caffe.Net('deploy.prototxt', 'bvlc_alexnet.caffemodel', 'test'))
 model:add(nn.Linear(1000,1))
 ```
-
-To load Caffe networks in Torch7 without having Caffe installed use this:
-https://github.com/szagoruyko/loadcaffe
